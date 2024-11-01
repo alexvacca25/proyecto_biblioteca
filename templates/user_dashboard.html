@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard del Usuario{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Préstamos Pendientes</h2>
+
+    {% if loans %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Libro</th>
+                    <th>Fecha de Préstamo</th>
+                    <th>Días Restantes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                    <tr>
+                        <td>{{ loan.book.title }}</td>
+                        <td>{{ loan.loan_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ loan.days_remaining if loan.days_remaining > 0 else 0 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tienes préstamos pendientes.</p>
+    {% endif %}
+</div>
+{% endblock %}

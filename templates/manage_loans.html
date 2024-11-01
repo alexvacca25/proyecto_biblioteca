@@ -1,0 +1,72 @@
+<!-- templates/manage_loans.html -->
+{% extends "layout.html" %}
+
+{% block title %}Gestionar Préstamos{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center">Gestionar Préstamos</h2>
+
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h3>Crear Préstamo</h3>
+    <form method="POST" action="{{ url_for('admin.manage_loans') }}">
+        <div class="form-group mb-3">
+            <label for="user_id">Selecciona Usuario</label>
+            <select class="form-control" name="user_id" id="user_id" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="book_id">Selecciona Libro</label>
+            <select class="form-control" name="book_id" id="book_id" required>
+                {% for book in books %}
+                    <option value="{{ book.id }}">{{ book.title }} - {{ book.author }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Crear Préstamo</button>
+    </form>
+
+    <h3 class="mt-5">Préstamos Actuales</h3>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Libro</th>
+                <th>Fecha de Préstamo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.user.username }}</td>
+                    <td>{{ loan.book.title }}</td>
+                    <td>{{ loan.loan_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ "Devuelto" if loan.is_returned else "Pendiente" }}</td>
+                    <td>
+                        {% if not loan.is_returned %}
+                            <form action="{{ url_for('admin.return_book', loan_id=loan.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Devolver</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

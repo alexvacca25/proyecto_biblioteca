@@ -1,0 +1,43 @@
+ 
+<!-- templates/dashboard.html -->
+{% extends "layout.html" %}
+
+{% block title %}Panel de Usuario{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center">Panel de Usuario</h2>
+    <p class="text-center">Bienvenido, {{ session['username'] }}.</p>
+
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h3 class="mt-4">Préstamos Pendientes</h3>
+    {% if alerts %}
+        <ul class="list-group">
+            {% for alert in alerts %}
+                <li class="list-group-item">
+                    <strong>Libro:</strong> {{ alert.book_title }}<br>
+                    <strong>Fecha de préstamo:</strong> {{ alert.loan_date.strftime('%Y-%m-%d') }}<br>
+                    <strong>Fecha de devolución:</strong> 
+                    {% if alert.return_date %}
+                        {{ alert.return_date.strftime('%Y-%m-%d') }}
+                    {% else %}
+                        <span class="text-danger">Pendiente</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center mt-3">No tienes préstamos pendientes.</p>
+    {% endif %}
+</div>
+{% endblock %}

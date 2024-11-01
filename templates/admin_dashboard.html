@@ -1,0 +1,38 @@
+<!-- templates/admin_dashboard.html -->
+{% extends "layout.html" %}
+
+{% block title %}Panel de Administrador{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center">Panel de Administrador</h2>
+    <p class="text-center">Gestiona los usuarios y sus roles.</p>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Nombre de Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ "Administrador" if user.role else "Usuario" }}</td>
+                    <td>
+                        {% if user.id != session.get('user_id') %}
+                            <form action="{{ url_for('admin.toggle_role', user_id=user.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-secondary btn-sm">
+                                    Cambiar a {{ "Usuario" if user.role else "Administrador" }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

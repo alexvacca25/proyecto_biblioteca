@@ -1,0 +1,65 @@
+<!-- templates/manage_users.html -->
+{% extends "layout.html" %}
+
+{% block title %}Gestionar Usuarios{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center">Gestionar Usuarios</h2>
+
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h3>Crear Usuario</h3>
+    <form method="POST" action="{{ url_for('admin.manage_users') }}">
+        <div class="form-group mb-3">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="role">Rol</label>
+            <select class="form-control" name="role" id="role">
+                <option value="user">Usuario Normal</option>
+                <option value="admin">Administrador</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Crear Usuario</button>
+    </form>
+
+    <h3 class="mt-5">Usuarios Existentes</h3>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Nombre de Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ 'Administrador' if user.role else 'Usuario Normal' }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
