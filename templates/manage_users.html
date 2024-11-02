@@ -9,17 +9,43 @@
 
     <!-- Mensajes Flash -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
 
     <h3>Crear Usuario</h3>
     <form method="POST" action="{{ url_for('admin.manage_users') }}">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="first_name">Primer Nombre</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="last_name">Primer Apellido</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" required>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="address">Direccion</label>
+                <input type="text" class="form-control" name="address" id="address" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="phone">Telefono</label>
+                <input type="text" class="form-control" name="phone" id="phone" required>
+            </div>
+
+        </div>
+
+
         <div class="form-group mb-3">
             <label for="username">Nombre de Usuario</label>
             <input type="text" class="form-control" name="username" id="username" required>
@@ -35,6 +61,8 @@
                 <option value="admin">Administrador</option>
             </select>
         </div>
+
+
         <button type="submit" class="btn btn-primary w-100">Crear Usuario</button>
     </form>
 
@@ -42,6 +70,9 @@
     <table class="table table-striped mt-4">
         <thead>
             <tr>
+                <th>Nombres</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
                 <th>Nombre de Usuario</th>
                 <th>Rol</th>
                 <th>Acciones</th>
@@ -49,15 +80,23 @@
         </thead>
         <tbody>
             {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ 'Administrador' if user.role else 'Usuario Normal' }}</td>
-                    <td>
-                        <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.address }} </td>
+                <td>{{ user.phone }} </td>
+                <td><span class="badge badge-pill badge-primary">{{ user.username }}</span></td>
+                {% if user.role %}
+                <td><span class="badge badge-secondary">Administrador</span></td>
+                {% else %}
+                <td><span class="badge badge-success">Usuario Normal</span></td>
+                {% endif %}
+                <td>
+                    <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

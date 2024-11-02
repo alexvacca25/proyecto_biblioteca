@@ -34,6 +34,10 @@ def manage_users():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        first_name=request.form['first_name']
+        last_name=request.form['last_name']
+        address=request.form['address']
+        phone=request.form['phone']
         role = True if request.form.get('role') == 'admin' else False
         
         existing_user = User.query.filter_by(username=username).first()
@@ -41,7 +45,7 @@ def manage_users():
             flash("El nombre de usuario ya existe.", "danger")
             return redirect(url_for('admin.manage_users'))
         
-        new_user = User(username=username, password=generate_password_hash(password), role=role)
+        new_user = User(username=username, password=generate_password_hash(password),first_name=first_name,last_name=last_name, address=address, phone=phone, role=role)
         db.session.add(new_user)
         db.session.commit()
         flash("Usuario creado exitosamente.", "success")
@@ -87,6 +91,8 @@ def manage_books():
     if request.method == 'POST':
         title = request.form['title']
         author = request.form['author']
+        anno_publica=request.form['anno_publica']
+        serie=request.form['serie']
         
         # Verificar si el libro ya existe
         existing_book = Book.query.filter_by(title=title).first()
@@ -94,7 +100,7 @@ def manage_books():
             flash("El libro ya existe.", "danger")
             return redirect(url_for('admin.manage_books'))
         
-        new_book = Book(title=title, author=author, available=True)
+        new_book = Book(title=title, author=author, available=True,anno_publica=anno_publica,serie=serie)
         db.session.add(new_book)
         db.session.commit()
         flash("Libro creado exitosamente.", "success")

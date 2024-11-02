@@ -26,11 +26,16 @@ def create_app():
 
         # Crear usuario administrador por defecto si no existe
         from models.user import User
-        admin_user = User.query.filter_by(username='admin').first()
+        admin_user = User.query.filter_by(username='alex').first()
         if not admin_user:
             admin_user = User(
-                username='admin',
+                username='alex',
                 password=generate_password_hash('admin123'),  # Cambia la contraseña por una segura
+                first_name='Admin',
+                last_name='Admin',
+                address='Admin',
+                phone='Admin',
+
                 role=True  # Este usuario es un administrador
             )
             db.session.add(admin_user)

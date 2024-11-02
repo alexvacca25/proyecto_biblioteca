@@ -11,6 +11,7 @@
     <table class="table table-striped mt-4">
         <thead>
             <tr>
+                <th>Nombres</th>
                 <th>Nombre de Usuario</th>
                 <th>Rol</th>
                 <th>Acciones</th>
@@ -18,19 +19,25 @@
         </thead>
         <tbody>
             {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ "Administrador" if user.role else "Usuario" }}</td>
-                    <td>
-                        {% if user.id != session.get('user_id') %}
-                            <form action="{{ url_for('admin.toggle_role', user_id=user.id) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-secondary btn-sm">
-                                    Cambiar a {{ "Usuario" if user.role else "Administrador" }}
-                                </button>
-                            </form>
-                        {% endif %}
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.username }}</td>
+                {% if user.role %}
+                <td><span class="badge badge-secondary">Administrador</span></td>
+                {% else %}
+                <td><span class="badge badge-success">Usuario Normal</span></td>
+                {% endif %}
+                <td>
+                    {% if user.id != session.get('user_id') %}
+                    <form action="{{ url_for('admin.toggle_role', user_id=user.id) }}" method="POST"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-secondary btn-sm">
+                            Cambiar a {{ "Usuario" if user.role else "Administrador" }}
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
