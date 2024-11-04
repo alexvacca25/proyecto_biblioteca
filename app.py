@@ -6,6 +6,8 @@ from werkzeug.security import generate_password_hash
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    
+    
     app.config['SECRET_KEY'] = 'supersecretkey'
     
     db.init_app(app)
@@ -35,7 +37,7 @@ def create_app():
                 last_name='Admin',
                 address='Admin',
                 phone='Admin',
-
+                url_image='https://cdn-icons-png.flaticon.com/512/149/149071.png',
                 role=True  # Este usuario es un administrador
             )
             db.session.add(admin_user)

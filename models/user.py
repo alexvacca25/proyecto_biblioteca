@@ -11,6 +11,8 @@ class User(db.Model):
     last_name=db.Column(db.String(100),nullable=False)
     address=db.Column(db.String(200),nullable=False)
     phone=db.Column(db.String(100),nullable=False)
+    url_image = db.Column(db.Text, nullable=False)
+
     role = db.Column(db.Boolean, default=False)  # False = Usuario regular, True = Administrador
     
     # Relación con Loan

@@ -12,7 +12,7 @@ class Book(db.Model):
     loaned_count = db.Column(db.Integer, default=0)  # Contador de préstamos realizados
     anno_publica=db.Column(db.Integer,nullable=False)
     serie=db.Column(db.String(100),unique=True,nullable=False)
-    
+    url_image = db.Column(db.Text, nullable=False)
     def __repr__(self):
         return f"<Book {self.title} by {self.author}>"
 

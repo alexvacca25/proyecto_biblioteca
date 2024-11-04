@@ -36,6 +36,10 @@
             <label for="serie">Serial</label>
             <input type="text" class="form-control" name="serie" id="serie" required>
         </div>
+        <div class="form-group mb-3">
+            <label for="url_image">Título</label>
+            <input type="text" class="form-control" name="url_image" id="url_image" required>
+        </div>
         <button type="submit" class="btn btn-primary w-100">Crear Libro</button>
     </form>
 
@@ -43,6 +47,7 @@
     <table class="table table-striped mt-4">
         <thead>
             <tr>
+                <th>imagen</th>
                 <th>Título</th>
                 <th>Autor</th>
                 <th>Año Publicacion</th>
@@ -53,6 +58,7 @@
         <tbody>
             {% for book in books %}
             <tr>
+                <td>{{ book.url_image }}</td>
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
                 <td>{{ book.anno_publica }}</td>

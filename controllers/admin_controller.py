@@ -38,6 +38,7 @@ def manage_users():
         last_name=request.form['last_name']
         address=request.form['address']
         phone=request.form['phone']
+        url_image=request.form['url_image']
         role = True if request.form.get('role') == 'admin' else False
         
         existing_user = User.query.filter_by(username=username).first()
@@ -45,7 +46,7 @@ def manage_users():
             flash("El nombre de usuario ya existe.", "danger")
             return redirect(url_for('admin.manage_users'))
         
-        new_user = User(username=username, password=generate_password_hash(password),first_name=first_name,last_name=last_name, address=address, phone=phone, role=role)
+        new_user = User(username=username, password=generate_password_hash(password),first_name=first_name,last_name=last_name, address=address, phone=phone,url_image=url_image, role=role)
         db.session.add(new_user)
         db.session.commit()
         flash("Usuario creado exitosamente.", "success")
